@@ -1,27 +1,9 @@
-__all__ = ['parts','coalesce','canForm','migrate','mkQ','mkB','mk_F_iicr','main_eigenvalue','mk_fixed_K_iicrs','mk_fixed_k_iicrs']
+__all__ = ['coalesce','migrate','mkQ','mkB','mk_F_iicr','main_eigenvalue','mk_fixed_K_iicrs','mk_fixed_k_iicrs']
 import copy
 import numpy as np
 from scipy import linalg
+from partition import *
 
-def parts(k,n):
-  """
-  Partitions of k with at most n parts.
-  This code is available on Internet but generally returns a generator.
-  """
-  if k == 1:
-    return [[1]]
-  else:
-    res=[]
-    lp = parts(k-1,n)
-    for p in lp: 
-      if len(p)==1 or (len(p) > 1 and p[-2] > p[-1]):
-        p[-1] += 1
-        res.append(copy.copy(p))
-        p[-1] -=1
-      if len(p)<n:
-        p.append(1)
-        res.append(copy.copy(p))
-  return res
 
 def coalesce(p):
   """
@@ -39,14 +21,7 @@ def coalesce(p):
       lwq.append(copy.copy(wq))
   return lwq
 
-def canForm(p):
-  """
-  Canonical form of a partition set.
-  """
-  p[:]=[x for x in p if x!=0]
-  p.sort()
-  p.reverse()
-  return p
+
 
 def migrate(n,p):
   """
